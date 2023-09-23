@@ -21,7 +21,7 @@ const server = net.createServer((connection) => {
             console.log(keyLen);
             console.log(key);
 
-            const valueResp = stringResp.substring(stringResp.indexOf("\n")+1+Number(keyLen)+2);
+            const valueResp = stringResp.substring(stringResp.indexOf("\n")+1+Number(keyLen)+2, stringResp.length);
             const valueLen = valueResp.substring(1, stringResp.indexOf("\r"));
             const value = valueResp.substring(valueResp.indexOf("\n")+1, valueResp.indexOf("\n")+1+Number(valueLen));
             console.log(valueLen);
