@@ -48,11 +48,9 @@ const server = net.createServer((connection) => {
             const key = stringResp.substring(stringResp.indexOf("\n")+1, stringResp.indexOf("\n")+1+Number(keyLen));
 
             const ans = map[key];
-            console.log("getAns:", ans);
-            console.log("diff:", Date.now() - ans.expiryInfo.setTime);
             if (!ans) {
                 connection.write("$-1\r\n");
-            } else if (ans.expiryInfo.expiresIn === null || ans.expiryInfo.expiresIn < Date.now() - ans.expiryInfo.setTime) {
+            } else if (ans.expiryInfo.expiresIn === null || ans.expiryInfo.expiresIn > Date.now() - ans.expiryInfo.setTime) {
                 connection.write("+" + ans.value + "\r\n");
             } else {
                 connection.write("$-1\r\n");
@@ -62,22 +60,14 @@ const server = net.createServer((connection) => {
             const stringResp = stringData.substring("*5\r\n$3\r\nset\r\n".length, stringData.length)
             const keyLen = stringResp.substring(1, stringResp.indexOf("\r"));
             const key = stringResp.substring(stringResp.indexOf("\n")+1, stringResp.indexOf("\n")+1+Number(keyLen));
-            console.log("keyLen: " + keyLen);
-            console.log("key: " + key);
 
             const valueResp = stringResp.substring(stringResp.indexOf("\n")+1+Number(keyLen)+2, stringResp.length);
             const valueLen = valueResp.substring(1, stringResp.indexOf("\r"));
             const value = valueResp.substring(valueResp.indexOf("\n") + 1, valueResp.indexOf("\n") + 1 + Number(valueLen));
-            console.log("valueResp:" + valueResp);
-            console.log("valueLen:" + valueLen);
-            console.log("value:" + value);
 
             const expiryResp = valueResp.substring(nthIndex(valueResp, "\n", 2)+9, valueResp.length);
             const expiryLen = expiryResp.substring(1, expiryResp.indexOf("\r"));
             const expiry = expiryResp.substring(expiryResp.indexOf("\n") + 1, expiryResp.indexOf("\n") + 1 + Number(expiryLen));
-            console.log("expiryResp:" + expiryResp);
-            console.log("expiryLen:" + expiryLen);
-            console.log("expiry:" + expiry);
 
             map[key] = {
                 value: value,
@@ -93,7 +83,9 @@ const server = net.createServer((connection) => {
         }
     })
 });
+
 // *5\r\n$3\r\nset\r\n$9\r\nelephants\r\n$5\r\nworld\r\n$2\r\npx\r\n$3\r\n100\r\n
 // $9\r\nelephants\r\n$5\r\nworld\r\n$2\r\npx\r\n$3\r\n100\r\n
 // $5\r\nworld\r\n$2\r\npx\r\n$3\r\n100\r\n
+
 server.listen(6379, "127.0.0.1");
