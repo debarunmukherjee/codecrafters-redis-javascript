@@ -1,6 +1,5 @@
 const net = require("net");
 
-// You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
 
 map = {};
@@ -18,10 +17,7 @@ const nthIndex = (str, pat, n) => {
 const server = net.createServer((connection) => {
     connection.on("data", (data) => {
         const stringData = data.toString();
-        if (stringData.startsWith("*2\r\n$4\r\nECHO\r\n")) {
-            const stringRESP = stringData.substring("*2\r\n$4\r\nECHO\r\n".length, stringData.length)
-            connection.write(stringRESP);
-        } else if (stringData.startsWith("*2\r\n$4\r\necho\r\n")) {
+        if (stringData.startsWith("*2\r\n$4\r\necho\r\n")) {
             const stringRESP = stringData.substring("*2\r\n$4\r\necho\r\n".length, stringData.length)
             connection.write(stringRESP);
         } else if (stringData.startsWith("*3\r\n$3\r\nset\r\n")) {
