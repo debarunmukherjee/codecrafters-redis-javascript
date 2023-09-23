@@ -81,7 +81,7 @@ const server = net.createServer((connection) => {
                 value: value,
                 expiryInfo: {
                     setTime: Date.now(),
-                    expiresIn: expiry
+                    expiresIn: Number(expiry)
                 }
             };
 
