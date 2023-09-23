@@ -7,7 +7,7 @@ console.log("Logs from your program will appear here!");
 const server = net.createServer((connection) => {
     connection.on("data", (data) => {
         const stringData = data.toString();
-        console.log(stringData);
+        // console.log(stringData);
         if (stringData.startsWith("*2\r\n$4\r\nECHO\r\n")) {
             const stringRESP = stringData.substring("*2\r\n$4\r\nECHO\r\n".length, stringData.length)
             const len = stringRESP.substring(1, stringRESP.indexOf("\r"));
@@ -15,7 +15,10 @@ const server = net.createServer((connection) => {
         } else if (stringData.startsWith("*2\r\n$4\r\necho\r\n")) {
             const stringRESP = stringData.substring("*2\r\n$4\r\necho\r\n".length, stringData.length)
             const len = stringRESP.substring(1, stringRESP.indexOf("\r"));
-            connection.write(stringRESP.substring(stringRESP.indexOf("n")+1, stringRESP.indexOf("n")+1+Number(len))+"\r\n");
+            const ans = stringRESP.substring(stringRESP.indexOf("n")+1, stringRESP.indexOf("n")+1+Number(len))+"\r\n";
+            console.log(len);
+            console.log(ans);
+            connection.write(ans);
         } else {
             connection.write("+PONG\r\n");
         }
