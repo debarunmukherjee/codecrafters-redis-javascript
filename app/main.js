@@ -70,7 +70,7 @@ const server = net.createServer((connection) => {
             console.log("valueLen:" + valueLen);
             console.log("value:" + value);
 
-            const expiryResp = valueResp.substring(nthIndex(valueResp, "\n", 2)+8, valueResp.length);
+            const expiryResp = valueResp.substring(nthIndex(valueResp, "\n", 2)+9, valueResp.length);
             const expiryLen = expiryResp.substring(1, expiryResp.indexOf("\r"));
             const expiry = expiryResp.substring(expiryResp.indexOf("\n") + 1, expiryResp.indexOf("\n") + 1 + Number(expiryLen));
             console.log("expiryResp:" + expiryResp);
