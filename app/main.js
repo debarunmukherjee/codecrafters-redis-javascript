@@ -48,6 +48,7 @@ const server = net.createServer((connection) => {
             const key = stringResp.substring(stringResp.indexOf("\n")+1, stringResp.indexOf("\n")+1+Number(keyLen));
 
             const ans = map[key];
+            console.log("getAns:", ans);
             if (!ans) {
                 connection.write("$-1\r\n");
             } else if (ans.expiryInfo.expiresIn === null || ans.expiryInfo.expiresIn < Date.now() - ans.expiryInfo.setTime) {
