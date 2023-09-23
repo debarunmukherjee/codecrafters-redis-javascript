@@ -56,6 +56,7 @@ const server = net.createServer((connection) => {
                 connection.write("$-1\r\n");
             }
         } else if (stringData.startsWith("*5\r\n$3\r\nset\r\n")) {
+            console.log("stringData: " + stringData);
             const stringResp = stringData.substring("*5\r\n$3\r\nset\r\n".length, stringData.length)
             const keyLen = stringResp.substring(1, stringResp.indexOf("\r"));
             const key = stringResp.substring(stringResp.indexOf("\n")+1, stringResp.indexOf("\n")+1+Number(keyLen));
