@@ -49,6 +49,7 @@ const server = net.createServer((connection) => {
 
             const ans = map[key];
             console.log("getAns:", ans);
+            console.log("diff:", Date.now() - ans.expiryInfo.setTime);
             if (!ans) {
                 connection.write("$-1\r\n");
             } else if (ans.expiryInfo.expiresIn === null || ans.expiryInfo.expiresIn < Date.now() - ans.expiryInfo.setTime) {
