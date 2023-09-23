@@ -15,7 +15,7 @@ const server = net.createServer((connection) => {
         } else if (stringData.startsWith("*2\r\n$4\r\necho\r\n")) {
             const stringRESP = stringData.substring("*2\r\n$4\r\necho\r\n".length, stringData.length)
             connection.write(stringRESP);
-        } else if (stringData.startsWith("*3\r\n$4\r\nset\r\n")) {
+        } else if (stringData.startsWith("*3\r\n$3\r\nset\r\n")) {
             const stringResp = stringData.substring("*2\r\n$4\r\necho\r\n".length, stringData.length)
             const keyLen = stringResp.substring(1, stringResp.indexOf("\r"));
             const key = stringResp.substring(stringResp.indexOf("\n")+1, stringResp.indexOf("n")+1+Number(keyLen));
@@ -25,6 +25,7 @@ const server = net.createServer((connection) => {
             console.log(key)
             console.log(value)
             map[key] = value;
+            connection.write("+OK\r\n");
         } else {
             connection.write("+PONG\r\n");
         }
